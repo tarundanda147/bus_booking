@@ -29,8 +29,8 @@ pipeline {
             steps {
                 script {
                     // Copy JAR to Tomcat server
-                    sh "scp target/bus-booking-app-1.0-SNAPSHOT.jar root@172.31.47.152:/opt/apache-tomcat-9.0.85/webapps/"
-                    sh "ssh root@172.31.47.152"
+                    sh "scp target/bus-booking-app-1.0-SNAPSHOT.jar root@172.31.9.118:/opt/apache-tomcat-9.0.85/webapps/"
+                    sh "ssh root@172.31.9.118"
                     echo "Application deployed and Tomcat restarted"
                 }
             }
