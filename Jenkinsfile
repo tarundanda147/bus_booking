@@ -11,7 +11,7 @@ pipeline {
         stage('build') {
             steps {
                 script {
-                    sh "$mvn clean install"
+                    sh "mvn clean install"
                 }
             }
         }
@@ -28,7 +28,7 @@ pipeline {
                 script {
                     // Copy JAR to Tomcat server
                     sh "scp target/bus-booking-app-1.0-SNAPSHOT.jar root@172.31.47.152:/opt/apache-tomcat-9.0.85/webapps/"
-                    sh "ssh root@$172.31.47.152"
+                    sh "ssh root@172.31.47.152"
                     echo "Application deployed and Tomcat restarted"
                 }
             }
