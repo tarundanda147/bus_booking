@@ -1,15 +1,5 @@
 pipeline {
-    agent {
-        label 'java'
-    }
-
-    environment {
-        TOMCAT_HOST = '172.31.47.152'
-        TOMCAT_USER = 'root'
-        TOMCAT_DIR = '/opt/apache-tomcat-9.0.85/webapps'
-        JAR_FILE = 'bus-booking-app-1.0-SNAPSHOT.jar'  
-    }
-
+    agent { label 'java' }
     stages {
         stage('checkout') {
             steps {
@@ -21,27 +11,14 @@ pipeline {
         stage('build') {
             steps {
                 script {
-                    def mvnHome = tool 'Maven'
-                    def mvnCMD = "${mvnHome}/bin/mvn"
-                    sh "${mvnCMD} clean install"
+                    sh "$mvn clean install"
                 }
             }
         }
-
-        stage('Show Contents of target') {
-            steps {
-                script {
-                    // Print the contents of the target directory
-                    sh 'ls -l target'
-                }
-            }
-        }
-
         stage('Run JAR Locally') {
             steps {
-                script {
-                    // Run the JAR file using java -jar
-                    sh "java -jar target/${JAR_FILE}"
+                script {   
+                    sh "java -jar target/bus-booking-app-1.0-SNAPSHOT.jar"
                 }
             }
         }
@@ -50,11 +27,8 @@ pipeline {
             steps {
                 script {
                     // Copy JAR to Tomcat server
-                    sh "scp target/${JAR_FILE} ${TOMCAT_USER}@${TOMCAT_HOST}:${TOMCAT_DIR}/"
-
-                    // SSH into Tomcat server and restart Tomcat
-                    sh "ssh ${TOMCAT_USER}@${TOMCAT_HOST} 'bash -s' < restart-tomcat.sh"
-
+                    sh "scp target/bus-booking-app-1.0-SNAPSHOT.jar root@172.31.47.152:/opt/apache-tomcat-9.0.85/webapps/"
+                    sh "ssh root@$172.31.47.152"
                     echo "Application deployed and Tomcat restarted"
                 }
             }
