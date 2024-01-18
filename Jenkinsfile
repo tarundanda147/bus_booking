@@ -5,6 +5,7 @@ pipeline {
             steps {
                 sh 'rm -rf bus_booking'
                 sh 'git clone https://github.com/tarundanda147/bus_booking.git'
+                sleep 30
             }
         }
 
